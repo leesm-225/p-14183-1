@@ -1,10 +1,13 @@
 "use client";
 
 import { apiFetch } from "@/lib/backend/client";
-import type { PostCommentDto, PostWithContentDto } from "@/type/post";
+import type { components } from "@/lib/backend/apiV1/schema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
+
+type PostWithContentDto = components["schemas"]["PostDto"];
+type PostCommentDto = components["schemas"]["PostCommentDto"];
 
 function usePost(id: number) {
   const [post, setPost] = useState<PostWithContentDto | null>(null);
@@ -21,10 +24,10 @@ function usePost(id: number) {
     apiFetch(`/api/v1/posts/${id}`, {
       method: "DELETE",
     })
-    .then(onSuccess)
-    .catch((error) => {
-      alert(`${error.resultCode} : ${error.msg}`);
-    });
+      .then(onSuccess)
+      .catch((error) => {
+        alert(`${error.resultCode} : ${error.msg}`);
+      });
   };
 
   return {
@@ -50,16 +53,16 @@ function usePostComments(postId: number) {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "DELETE",
     })
-    .then((data) => {
-      if (postComments == null) return;
+      .then((data) => {
+        if (postComments == null) return;
 
-      setPostComments(postComments.filter((c) => c.id != commentId));
+        setPostComments(postComments.filter((c) => c.id != commentId));
 
-      onSuccess(data);
-    })
-    .catch((error) => {
-      alert(`${error.resultCode} : ${error.msg}`);
-    });
+        onSuccess(data);
+      })
+      .catch((error) => {
+        alert(`${error.resultCode} : ${error.msg}`);
+      });
   };
 
   const writeComment = (content: string, onSuccess: (data: any) => void) => {
@@ -68,16 +71,17 @@ function usePostComments(postId: number) {
       body: JSON.stringify({
         content,
       }),
-    }).then((data) => {
-      if (postComments == null) return;
-
-      setPostComments([...postComments, data.data]);
-
-      onSuccess(data);
     })
-    .catch((error) => {
-      alert(`${error.resultCode} : ${error.msg}`);
-    });
+      .then((data) => {
+        if (postComments == null) return;
+
+        setPostComments([...postComments, data.data]);
+
+        onSuccess(data);
+      })
+      .catch((error) => {
+        alert(`${error.resultCode} : ${error.msg}`);
+      });
   };
 
   const modifyComment = (
@@ -89,20 +93,20 @@ function usePostComments(postId: number) {
       method: "PUT",
       body: JSON.stringify({ content }),
     })
-    .then((data) => {
-      if (postComments == null) return;
+      .then((data) => {
+        if (postComments == null) return;
 
-      setPostComments(
-        postComments.map((comment) =>
-          comment.id === commentId ? { ...comment, content } : comment
-        )
-      );
+        setPostComments(
+          postComments.map((comment) =>
+            comment.id === commentId ? { ...comment, content } : comment
+          )
+        );
 
-      onSuccess(data);
-    })
-    .catch((error) => {
-      alert(`${error.resultCode} : ${error.msg}`);
-    });
+        onSuccess(data);
+      })
+      .catch((error) => {
+        alert(`${error.resultCode} : ${error.msg}`);
+      });
   };
 
   return {
