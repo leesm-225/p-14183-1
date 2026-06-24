@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import { apiFetch } from "@/lib/backend/client";
 
@@ -11,6 +11,8 @@ import type { components } from "@/lib/backend/apiV1/schema";
 
 type PostWithContentDto = components["schemas"]["PostWithContentDto"];
 type PostCommentDto = components["schemas"]["PostCommentDto"];
+type RsDataVoid = components["schemas"]["RsDataVoid"];
+type RsDataPostCommentDto = components["schemas"]["RsDataPostCommentDto"];
 
 function usePost(id: number) {
   const [post, setPost] = useState<PostWithContentDto | null>(null);
@@ -52,8 +54,10 @@ function usePostComments(postId: number) {
       });
   }, [postId]);
 
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const deleteComment = (commentId: number, onSuccess: (data: any) => void) => {
+  const deleteComment = (
+    commentId: number,
+    onSuccess: (data: RsDataVoid) => void,
+  ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "DELETE",
     })
@@ -68,8 +72,11 @@ function usePostComments(postId: number) {
         alert(`${error.resultCode} : ${error.msg}`);
       });
   };
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const writeComment = (content: string, onSuccess: (data: any) => void) => {
+
+  const writeComment = (
+    content: string,
+    onSuccess: (data: RsDataPostCommentDto) => void,
+  ) => {
     apiFetch(`/api/v1/posts/${postId}/comments`, {
       method: "POST",
       body: JSON.stringify({
@@ -91,8 +98,7 @@ function usePostComments(postId: number) {
   const modifyComment = (
     commentId: number,
     content: string,
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onSuccess: (data: any) => void,
+    onSuccess: (data: RsDataVoid) => void,
   ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "PUT",
@@ -144,10 +150,7 @@ function PostInfo({ postState }: { postState: ReturnType<typeof usePost> }) {
       <div style={{ whiteSpace: "pre-line" }}>{post.content}</div>
 
       <div className="flex gap-2">
-        <button
-          className="p-2 rounded border cursor-pointer"
-          onClick={deletePost}
-        >
+        <button className="p-2 rounded border" onClick={deletePost}>
           삭제
         </button>
         <Link className="p-2 rounded border" href={`/posts/${post.id}/edit`}>
@@ -166,7 +169,7 @@ function PostCommentWrite({
   const { postId, writeComment } = postCommentsState;
 
   const handleCommentWriteFormSubmit = (
-    e: React.SyntheticEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
 
@@ -181,7 +184,6 @@ function PostCommentWrite({
     if (contentTextarea.value.length === 0) {
       alert("댓글 내용을 입력해주세요.");
       contentTextarea.focus();
-
       return;
     }
 
@@ -347,16 +349,14 @@ function PostCommentWriteAndList({
     <>
       <PostCommentWrite postCommentsState={postCommentsState} />
 
-      <hr className="my-2" />
-
       <PostCommentList postCommentsState={postCommentsState} />
     </>
   );
 }
 
-export default function Page() {
-  const { id: idStr } = useParams<{ id: string }>();
-  const id = Number(idStr);
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id: idStr } = use(params);
+  const id = parseInt(idStr);
 
   const postState = usePost(id);
   const postCommentsState = usePostComments(id);
@@ -366,8 +366,6 @@ export default function Page() {
       <h1>글 상세페이지</h1>
 
       <PostInfo postState={postState} />
-
-      <hr className="my-2" />
 
       <PostCommentWriteAndList postCommentsState={postCommentsState} />
     </>
