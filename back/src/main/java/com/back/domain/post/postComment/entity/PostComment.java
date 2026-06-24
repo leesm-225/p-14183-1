@@ -40,4 +40,5 @@ public class PostComment extends BaseEntity {
         if (!author.equals(actor))
             throw new ServiceException("403-2", "%d번 댓글 삭제 권한이 없습니다.".formatted(getId()));
     }
+
 }

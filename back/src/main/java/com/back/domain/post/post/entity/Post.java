@@ -25,6 +25,7 @@ public class Post extends BaseEntity {
     private Member author;
     private String title;
     private String content;
+    private String summary;
 
     @OneToMany(mappedBy = "post", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     private final List<PostComment> comments = new ArrayList<>();
@@ -69,4 +70,6 @@ public class Post extends BaseEntity {
         if (!author.equals(actor))
             throw new ServiceException("403-2", "%d번 글 삭제 권한이 없습니다.".formatted(getId()));
     }
+
+
 }
