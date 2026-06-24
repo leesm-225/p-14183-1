@@ -228,7 +228,6 @@ export interface components {
             authorId?: number;
             authorName?: string;
             title?: string;
-            content?: string;
         };
         RsDataPostDto: {
             resultCode?: string;
@@ -416,7 +415,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["PostWithContentDto"];                };
+                    "application/json;charset=UTF-8": components["schemas"]["PostWithContentDto"];
+                };
             };
         };
     };

@@ -3,10 +3,10 @@
 import { apiFetch } from "@/lib/backend/client";
 import type { components } from "@/lib/backend/apiV1/schema";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-type PostWithContentDto = components["schemas"]["PostDto"];
+type PostWithContentDto = components["schemas"]["PostWithContentDto"];
 type PostCommentDto = components["schemas"]["PostCommentDto"];
 
 function usePost(id: number) {
@@ -139,7 +139,7 @@ function PostInfo({ postState }: { postState: ReturnType<typeof usePost> }) {
       <div style={{ whiteSpace: "pre-line" }}>{post.content}</div>
 
       <div className="flex gap-2">
-        <button className="p-2 rounded border" onClick={deletePost}>
+        <button className="p-2 rounded border cursor-pointer" onClick={deletePost}>
           삭제
         </button>
         <Link className="p-2 rounded border" href={`/posts/${post.id}/edit`}>
@@ -158,7 +158,7 @@ function PostCommentWrite({
   const { postId, writeComment } = postCommentsState;
 
   const handleCommentWriteFormSubmit = (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.SyntheticEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
@@ -173,6 +173,7 @@ function PostCommentWrite({
     if (contentTextarea.value.length === 0) {
       alert("댓글 내용을 입력해주세요.");
       contentTextarea.focus();
+
       return;
     }
 
@@ -338,14 +339,16 @@ function PostCommentWriteAndList({
     <>
       <PostCommentWrite postCommentsState={postCommentsState} />
 
+      <hr className="my-2" />
+
       <PostCommentList postCommentsState={postCommentsState} />
     </>
   );
 }
 
-export default function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id: idStr } = use(params);
-  const id = parseInt(idStr);
+export default function Page() {
+  const { id: idStr } = useParams<{ id: string }>();
+  const id = Number(idStr);
 
   const postState = usePost(id);
   const postCommentsState = usePostComments(id);
@@ -355,6 +358,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       <h1>글 상세페이지</h1>
 
       <PostInfo postState={postState} />
+
+      <hr className="my-2" />
 
       <PostCommentWriteAndList postCommentsState={postCommentsState} />
     </>
