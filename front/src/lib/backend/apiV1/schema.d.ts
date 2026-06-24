@@ -201,13 +201,13 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        RsDataVoid: {
+            resultCode: string;
+            msg: string;
+            data: unknown;
+        };
         PostCommentModifyReqBody: {
             content: string;
-        };
-        RsDataVoid: {
-            resultCode?: string;
-            msg?: string;
-            data?: unknown;
         };
         PostModifyReqBody: {
             title: string;
@@ -231,9 +231,9 @@ export interface components {
             summary: string;
         };
         RsDataPostDto: {
-            resultCode?: string;
-            msg?: string;
-            data?: components["schemas"]["PostDto"];
+            resultCode: string;
+            msg: string;
+            data: components["schemas"]["PostDto"];
         };
         PostCommentWriteReqBody: {
             content: string;
@@ -253,9 +253,9 @@ export interface components {
             content: string;
         };
         RsDataPostCommentDto: {
-            resultCode?: string;
-            msg?: string;
-            data?: components["schemas"]["PostCommentDto"];
+            resultCode: string;
+            msg: string;
+            data: components["schemas"]["PostCommentDto"];
         };
         MemberJoinReqBody: {
             username: string;
@@ -272,9 +272,9 @@ export interface components {
             name: string;
         };
         RsDataMemberDto: {
-            resultCode?: string;
-            msg?: string;
-            data?: components["schemas"]["MemberDto"];
+            resultCode: string;
+            msg: string;
+            data: components["schemas"]["MemberDto"];
         };
         MemberLoginReqBody: {
             username: string;
@@ -286,9 +286,9 @@ export interface components {
             accessToken?: string;
         };
         RsDataMemberLoginResBody: {
-            resultCode?: string;
-            msg?: string;
-            data?: components["schemas"]["MemberLoginResBody"];
+            resultCode: string;
+            msg: string;
+            data: components["schemas"]["MemberLoginResBody"];
         };
         MemberWithUsernameDto: {
             /** Format: int32 */
@@ -334,6 +334,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["PostCommentDto"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     modify: {
@@ -354,6 +363,15 @@ export interface operations {
         responses: {
             /** @description OK */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -384,6 +402,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     getItem_1: {
@@ -406,6 +433,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["PostDto"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     modify_1: {
@@ -425,6 +461,15 @@ export interface operations {
         responses: {
             /** @description OK */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -454,6 +499,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     getItems: {
@@ -472,6 +526,15 @@ export interface operations {
                 };
                 content: {
                     "application/json;charset=UTF-8": components["schemas"]["PostDto"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
                 };
             };
         };
@@ -498,6 +561,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["RsDataPostDto"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     getItems_1: {
@@ -518,6 +590,15 @@ export interface operations {
                 };
                 content: {
                     "application/json;charset=UTF-8": components["schemas"]["PostCommentDto"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
                 };
             };
         };
@@ -546,6 +627,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["RsDataPostCommentDto"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     join: {
@@ -568,6 +658,15 @@ export interface operations {
                 };
                 content: {
                     "application/json;charset=UTF-8": components["schemas"]["RsDataMemberDto"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
                 };
             };
         };
@@ -594,6 +693,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["RsDataMemberLoginResBody"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     me: {
@@ -612,6 +720,15 @@ export interface operations {
                 };
                 content: {
                     "application/json;charset=UTF-8": components["schemas"]["MemberWithUsernameDto"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
                 };
             };
         };
@@ -634,6 +751,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["AdmPostCountResBody"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     getItems_2: {
@@ -652,6 +778,15 @@ export interface operations {
                 };
                 content: {
                     "application/json;charset=UTF-8": components["schemas"]["MemberWithUsernameDto"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
                 };
             };
         };
@@ -676,6 +811,15 @@ export interface operations {
                     "application/json;charset=UTF-8": components["schemas"]["MemberWithUsernameDto"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
         };
     };
     logout: {
@@ -689,6 +833,15 @@ export interface operations {
         responses: {
             /** @description OK */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json;charset=UTF-8": components["schemas"]["RsDataVoid"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
